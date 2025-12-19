@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Automatic Object Height Estimation</title>
+  <title>Automatic Height Estimation with Camera</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -11,13 +11,11 @@
   <div class="container">
     <h2>Automatic Height Estimation</h2>
 
-    <!-- Optional: For demo, default distance -->
-    <p>Distance from object (meters): <span id="distance">5</span></p>
+    <!-- Live Camera -->
+    <video id="camera" autoplay playsinline></video>
 
-    <!-- Display real-time angle -->
+    <!-- Display Angle and Height -->
     <p id="angle">Angle: -- °</p>
-
-    <!-- Display calculated height -->
     <p id="height">Estimated Height: -- m</p>
   </div>
 
