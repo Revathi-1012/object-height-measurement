@@ -1,65 +1,70 @@
-let angle = 0;
+let currentAngle = 0;
+let baseAngle = null;
+let topAngle = null;
 
-// Button reference
-const startBtn = document.getElementById("startBtn");
+// Button references
+const baseBtn = document.getElementById("baseBtn");
+const topBtn = document.getElementById("topBtn");
 
-// Button click event
-startBtn.addEventListener("click", startMeasurement);
-
-// Function to start sensor measurement
-function startMeasurement() {
-
-  // Check device support
+// Request sensor permission & start listening
+function startSensor() {
   if (typeof DeviceOrientationEvent === "undefined") {
-    alert("Orientation sensor not supported on this device");
+    alert("Orientation sensor not supported");
     return;
   }
 
-  // iOS permission request
   if (typeof DeviceOrientationEvent.requestPermission === "function") {
     DeviceOrientationEvent.requestPermission()
-      .then(permission => {
-        if (permission === "granted") {
-          window.addEventListener("deviceorientation", handleOrientation);
+      .then(response => {
+        if (response === "granted") {
+          window.addEventListener("deviceorientation", readOrientation);
         } else {
           alert("Permission denied");
         }
       })
-      .catch(error => {
-        console.error(error);
-      });
-  } 
-  // Android & others
-  else {
-    window.addEventListener("deviceorientation", handleOrientation);
+      .catch(console.error);
+  } else {
+    window.addEventListener("deviceorientation", readOrientation);
   }
 }
 
-// Function to read orientation and calculate height
-function handleOrientation(event) {
+// Read orientation angle
+function readOrientation(event) {
+  currentAngle = event.beta;
+}
 
-  // Pitch angle (tilt)
-  angle = event.beta;
+// Capture base angle
+baseBtn.addEventListener("click", () => {
+  startSensor();
+  baseAngle = currentAngle;
+  document.getElementById("baseAngle").innerText =
+    "Base Angle: " + baseAngle.toFixed(2) + "°";
+});
 
-  document.getElementById("angle").innerText =
-    "Angle: " + angle.toFixed(2) + "°";
+// Capture top angle and calculate height
+topBtn.addEventListener("click", () => {
+  startSensor();
+  topAngle = currentAngle;
+  document.getElementById("topAngle").innerText =
+    "Top Angle: " + topAngle.toFixed(2) + "°";
 
-  // Read distance
-  const distanceInput = document.getElementById("distance").value;
-  const distance = parseFloat(distanceInput);
+  calculateHeight();
+});
 
-  // Validation
-  if (isNaN(distance) || distance <= 0 || angle <= 0) {
+// Height calculation using sensor model
+function calculateHeight() {
+  const distance = parseFloat(document.getElementById("distance").value);
+
+  if (isNaN(distance) || baseAngle === null || topAngle === null) {
+    alert("Please set distance, base angle, and top angle");
     return;
   }
 
-  // Convert degrees to radians
-  const radians = angle * Math.PI / 180;
+  const baseRad = baseAngle * Math.PI / 180;
+  const topRad = topAngle * Math.PI / 180;
 
-  // Trigonometry formula
-  const height = distance * Math.tan(radians);
+  const height = distance * (Math.tan(topRad) - Math.tan(baseRad));
 
-  // Display result
   document.getElementById("height").innerText =
     "Height: " + height.toFixed(2) + " meters";
 }
