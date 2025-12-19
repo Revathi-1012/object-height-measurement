@@ -3,20 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Automatic Height Estimation with Camera</title>
+  <title>Object Height Measurement</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <div class="container">
-    <h2>Automatic Height Estimation</h2>
+    <h2>Object Height Measurement</h2>
 
-    <!-- Live Camera -->
+    <!-- Video preview -->
     <video id="camera" autoplay playsinline></video>
 
-    <!-- Display Angle and Height -->
+    <!-- Canvas overlay -->
+    <canvas id="overlay"></canvas>
+
+    <!-- Display tilt angle -->
     <p id="angle">Angle: -- °</p>
-    <p id="height">Estimated Height: -- m</p>
+
+    <!-- Display approximate distance -->
+    <p id="distance">Distance: -- m</p>
+
+    <!-- Display height -->
+    <p id="height">Height: --</p>
   </div>
 
   <script src="script.js"></script>
