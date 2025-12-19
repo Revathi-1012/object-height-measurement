@@ -2,27 +2,37 @@
 const distance = 5;
 
 // Elements
+const video = document.getElementById("camera");
 const angleEl = document.getElementById("angle");
 const heightEl = document.getElementById("height");
-const distanceEl = document.getElementById("distance");
 
-// Display distance
-distanceEl.innerText = distance;
+// Open camera (rear)
+navigator.mediaDevices.getUserMedia({
+  video: { facingMode: "environment" },
+  audio: false
+})
+.then(stream => {
+  video.srcObject = stream;
+})
+.catch(err => {
+  alert("Camera access denied or not supported.");
+});
 
-// Check sensor support and request permission (iOS)
+// Start orientation sensor
 function startOrientationSensor() {
   if (typeof DeviceOrientationEvent === "undefined") {
-    alert("Orientation sensor not supported on this device.");
+    alert("Orientation sensor not supported.");
     return;
   }
 
+  // iOS 13+ requires permission
   if (typeof DeviceOrientationEvent.requestPermission === "function") {
     DeviceOrientationEvent.requestPermission()
       .then(response => {
         if (response === "granted") {
           window.addEventListener("deviceorientation", handleOrientation);
         } else {
-          alert("Permission denied.");
+          alert("Permission denied for sensors.");
         }
       })
       .catch(console.error);
@@ -31,7 +41,7 @@ function startOrientationSensor() {
   }
 }
 
-// Handle orientation
+// Handle orientation event
 function handleOrientation(event) {
   const angle = event.beta; // pitch angle in degrees
   angleEl.innerText = "Angle: " + angle.toFixed(2) + " °";
@@ -43,5 +53,5 @@ function handleOrientation(event) {
   }
 }
 
-// Start sensor
+// Start sensor automatically
 startOrientationSensor();
