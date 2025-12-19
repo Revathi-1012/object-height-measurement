@@ -3,30 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Object Height Estimation</title>
+  <title>Automatic Object Height Estimation</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <div class="container">
-    <h2>Object Height Estimation</h2>
+    <h2>Automatic Height Estimation</h2>
 
-    <!-- Distance (can be assumed eye distance) -->
-    <input type="number" id="distance" placeholder="Distance from object (meters)">
+    <!-- Optional: For demo, default distance -->
+    <p>Distance from object (meters): <span id="distance">5</span></p>
 
-    <!-- Angle capture buttons -->
-    <button id="baseBtn">Set Base Angle</button>
-    <button id="topBtn">Set Top Angle</button>
+    <!-- Display real-time angle -->
+    <p id="angle">Angle: -- °</p>
 
-    <!-- Display angles -->
-    <p id="baseAngle">Base Angle: --</p>
-    <p id="topAngle">Top Angle: --</p>
-
-    <!-- Result -->
-    <p id="height">Height: --</p>
+    <!-- Display calculated height -->
+    <p id="height">Estimated Height: -- m</p>
   </div>
 
   <script src="script.js"></script>
 </body>
 </html>
-
